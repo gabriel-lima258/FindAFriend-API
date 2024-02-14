@@ -24,4 +24,10 @@ export class InMemoryPetRepository implements PetsRepository {
 
     return pet
   }
+
+  async findManyByCity(query: string, page: number) {
+    return this.items
+      .filter((item) => item.city.includes(query))
+      .slice((page - 1) * 20, page * 20)
+  }
 }
