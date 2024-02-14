@@ -1,0 +1,42 @@
+{
+  "name": "findafriend-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "node build/server.ts",
+    "build": "tsup src --out-dir build",
+    "lint": "eslint src --ext .ts --fix",
+    "test": "vitest run --dir src/use-cases",
+    "test:watch": "vitest --dir src/use-cases",
+    "pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment",
+    "test:e2e": "vitest run --dir src/http",
+    "test:e2e:watch": "vitest --dir src/http",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^2.2.2",
+    "@types/bcryptjs": "2.4.6",
+    "@types/node": "^20.11.17",
+    "@vitest/ui": "1.2.2",
+    "eslint": "^8.56.0",
+    "prisma": "5.9.1",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3",
+    "vite-tsconfig-paths": "4.3.1",
+    "vitest": "1.2.2"
+  },
+  "dependencies": {
+    "@prisma/client": "5.9.1",
+    "bcryptjs": "2.4.3",
+    "dotenv": "^16.4.2",
+    "fastify": "^4.26.0",
+    "zod": "^3.22.4"
+  }
+}

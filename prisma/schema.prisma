@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum State {
+  AC
+  AL
+  AP
+  AM
+  BA
+  CE
+  DF
+  ES
+  GO
+  MA
+  MT
+  MS
+  MG
+  PA
+  PB
+  PR
+  PE
+  PI
+  RJ
+  RN
+  RS
+  RO
+  RR
+  SC
+  SP
+  SE
+  TO
+}
+
+model Org {
+  id             String   @id @default(uuid())
+  name           String
+  email          String   @unique
+  password_hash  String
+  cep            String
+  address        String
+  state          State?
+  whatsappNumber String
+  created_at     DateTime @default(now())
+
+  pets Pet[]
+
+  @@map("orgs")
+}
+
+enum Age {
+  CUB
+  ADULT
+  ELDERLY
+}
+
+enum Size {
+  SMALL
+  MEDIUM
+  BIG
+}
+
+enum Energy {
+  VERY_LOW
+  LOW
+  AVERAGE
+  HIGH
+  VERY_HIGH
+}
+
+enum Independence {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Type {
+  DOG
+  CAT
+}
+
+model Pet {
+  id           String        @id @default(uuid())
+  name         String
+  description  String
+  city         String
+  age          Age?
+  size         Size?
+  energy       Energy?
+  independence Independence?
+  type         Type?
+  created_at   DateTime      @default(now())
+
+  org    Org    @relation(fields: [org_id], references: [id])
+  org_id String
+
+  photos               Photo[]
+  adoptionRequirements AdoptionRequirement[]
+
+  @@map("pets")
+}
+
+model Photo {
+  id         String   @id @default(uuid())
+  url        String
+  created_at DateTime @default(now())
+
+  pet    Pet    @relation(fields: [pet_id], references: [id])
+  pet_id String
+
+  @@map("photos")
+}
+
+model AdoptionRequirement {
+  id         String   @id @default(uuid())
+  title      String
+  created_at DateTime @default(now())
+
+  pet    Pet    @relation(fields: [pet_id], references: [id])
+  pet_id String
+
+  @@map("adoption_requirements")
+}
