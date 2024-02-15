@@ -54,7 +54,7 @@ describe('Fetch City Pet Use Case', () => {
     })
 
     const { pets } = await fetchCityPetsUseCase.execute({
-      query: 'Santa Maria',
+      city: 'Santa Maria',
       page: 1,
     })
 
@@ -79,7 +79,7 @@ describe('Fetch City Pet Use Case', () => {
     }
 
     const { pets } = await fetchCityPetsUseCase.execute({
-      query: 'Santa Maria',
+      city: 'Santa Maria',
       page: 2,
     })
 

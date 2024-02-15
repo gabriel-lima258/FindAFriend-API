@@ -3,7 +3,7 @@ import { Pet } from '@prisma/client'
 
 // interface de dados de requisição
 interface FetchCityPetsUseCaseRequest {
-  query: string
+  city: string
   page: number
 }
 
@@ -16,10 +16,10 @@ export class FetchCityPetsUseCase {
   constructor(private petsRepository: PetsRepository) {}
 
   async execute({
-    query,
+    city,
     page,
   }: FetchCityPetsUseCaseRequest): Promise<FetchCityPetsUseCaseResponse> {
-    const pets = await this.petsRepository.findManyByCity(query, page)
+    const pets = await this.petsRepository.findManyByCity(city, page)
 
     return {
       pets,

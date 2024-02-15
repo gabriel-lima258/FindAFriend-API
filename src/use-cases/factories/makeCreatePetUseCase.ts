@@ -2,7 +2,7 @@ import { PrismaOrgsRepository } from '@/repositories/prisma/prima-orgs-repositor
 import { PrismaPetsRepository } from '@/repositories/prisma/prisma-pets-repository'
 import { CreatePetUseCase } from '../pets/create-pet'
 
-export function makeCreateOrgUseCase() {
+export function makeCreatePetUseCase() {
   const prismaPetsRepository = new PrismaPetsRepository()
   const prismaOrgUseCase = new PrismaOrgsRepository()
 

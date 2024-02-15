@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { $Enums, Prisma } from '@prisma/client'
 import { PetsRepository } from '../pets-repository'
 import { prisma } from '@/lib/prisma'
 
@@ -11,11 +11,11 @@ export class PrismaPetsRepository implements PetsRepository {
     return pet
   }
 
-  async findManyByCity(query: string, page: number) {
+  async findManyByCity(city: string, page: number) {
     const pets = await prisma.pet.findMany({
       where: {
         city: {
-          contains: query,
+          contains: city,
         },
       },
       take: 20,
@@ -23,5 +23,35 @@ export class PrismaPetsRepository implements PetsRepository {
     })
 
     return pets
+  }
+
+  async findManyByFilter(
+    age?: $Enums.Age,
+    energy?: $Enums.Energy,
+    size?: $Enums.Size,
+    independence?: $Enums.Independence,
+    type?: $Enums.Type,
+  ) {
+    const pets = await prisma.pet.findMany({
+      where: {
+        age,
+        energy,
+        size,
+        independence,
+        type,
+      },
+    })
+
+    return pets
+  }
+
+  async findById(id: string) {
+    const pet = await prisma.pet.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return pet
   }
 }
