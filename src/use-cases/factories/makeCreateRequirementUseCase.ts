@@ -2,7 +2,7 @@ import { PrismaPetsRepository } from '@/repositories/prisma/prisma-pets-reposito
 import { PrismaAdoptionRequirenmentRepository } from '@/repositories/prisma/prisma-adoption-requirement-repository'
 import { CreateAdoptionRequirementUseCase } from '../adoption_requirement/create-requirement'
 
-export function makeCreatePetUseCase() {
+export function makeCreateRequirementUseCase() {
   const prismaPetsRepository = new PrismaPetsRepository()
   const prismaAdoptionRequirementUseCase =
     new PrismaAdoptionRequirenmentRepository()

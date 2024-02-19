@@ -9,7 +9,7 @@ export async function authenticate(
 ) {
   const authenticateBodySchema = z.object({
     email: z.string().email(),
-    password: z.string().min(6),
+    password: z.string().min(8),
   })
 
   const { email, password } = authenticateBodySchema.parse(request.body)
@@ -17,10 +17,41 @@ export async function authenticate(
   try {
     const authenticateOrgUseCase = makeAuthenticateOrgUseCase()
 
-    await authenticateOrgUseCase.execute({
+    const { org } = await authenticateOrgUseCase.execute({
       email,
       password,
     })
+
+    const token = await reply.jwtSign(
+      {},
+      {
+        sign: {
+          sub: org.id,
+        },
+      },
+    )
+
+    const refreshToken = await reply.jwtSign(
+      {},
+      {
+        sign: {
+          sub: org.id,
+          expiresIn: '7d',
+        },
+      },
+    )
+
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: true,
+        sameSite: true,
+        httpOnly: true,
+      })
+      .status(200)
+      .send({
+        token,
+      })
   } catch (error) {
     if (error instanceof InvalidCredencialError) {
       return reply.status(400).send({ message: error.message })
@@ -28,6 +59,4 @@ export async function authenticate(
 
     throw error
   }
-
-  return reply.status(200).send()
 }

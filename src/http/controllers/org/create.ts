@@ -7,13 +7,42 @@ export async function createOrg(request: FastifyRequest, reply: FastifyReply) {
   const createOrgBodySchema = z.object({
     name: z.string(),
     email: z.string().email(),
-    password: z.string().min(6),
-    cep: z.string(),
+    password: z.string().min(8),
+    cep: z.string().length(8),
     address: z.string(),
+    state: z.enum([
+      'AC',
+      'AL',
+      'AP',
+      'AM',
+      'BA',
+      'CE',
+      'DF',
+      'ES',
+      'GO',
+      'MA',
+      'MT',
+      'MS',
+      'MG',
+      'PA',
+      'PB',
+      'PR',
+      'PE',
+      'PI',
+      'RJ',
+      'RN',
+      'RS',
+      'RO',
+      'RR',
+      'SC',
+      'SP',
+      'SE',
+      'TO',
+    ]),
     whatsappNumber: z.string(),
   })
 
-  const { name, email, password, cep, address, whatsappNumber } =
+  const { name, email, password, cep, address, state, whatsappNumber } =
     createOrgBodySchema.parse(request.body)
 
   try {
@@ -25,13 +54,13 @@ export async function createOrg(request: FastifyRequest, reply: FastifyReply) {
       password,
       cep,
       address,
+      state,
       whatsappNumber,
     })
   } catch (error) {
     if (error instanceof OrgAlreadyExistsError) {
       return reply.status(409).send({ message: error.message })
     }
-
     throw error
   }
 
